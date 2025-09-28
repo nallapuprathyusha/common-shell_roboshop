@@ -1,15 +1,19 @@
 #!/bin/bash
 
 source ./common.sh
+root_check
 app_name=catalogue
 
 NODEJS_SETUP
+
 USER_SETUP
 
 npm install &>> $LOG_FILE
 CHECK $? "Installing denpendencies"
 
 APP_SETUP
+
+systemctl_enable_start
 
 mongo_repo
 

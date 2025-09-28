@@ -74,13 +74,13 @@ CHECK $? "app directory status::"
 rm -rf /app/*
 CHECK $? "Removing existing code"
 
-curl -o /tmp/catalogue.zip https://roboshop-artifacts.s3.amazonaws.com/catalogue-v3.zip &>> $LOG_FILE
+curl -o /tmp/$app_name.zip https://roboshop-artifacts.s3.amazonaws.com/$app_name-v3.zip &>> $LOG_FILE
 CHECK $? "Downloading files"
 
 cd /app &>> $LOG_FILE
 CHECK $? "Going into directory"
 
-unzip /tmp/catalogue.zip &>> $LOG_FILE
+unzip /tmp/$app_name.zip &>> $LOG_FILE
 CHECK $? "Unzip the files in app directory"
 
 }
@@ -88,25 +88,20 @@ APP_SETUP()
 {
 
 cp /root/common-shell_roboshop/$app_name.service /etc/systemd/system/$app_name.service
-CHECK $? "copying catalogue serice file to systemd"
+CHECK $? "copying $app_name service file to systemd"
 
 systemctl daemon-reload &>> $LOG_FILE
 CHECK $? "daemon-reload"
 
-systemctl enable catalogue &>> $LOG_FILE
-CHECK $? "enabling catalogue" 
-
-systemctl start catalogue &>> $LOG_FILE
-CHECK $? "starting catalogue"
 
 }
 
 systemctl_enable_start()
 {
-    systemctl enable mongod &>> $LOG_FILE
-    CHECK $? "Enable MongoDB"
+    systemctl enable $app_name &>> $LOG_FILE
+CHECK $? "enabling $app_name" 
 
-    systemctl start mongod &>> $LOG_FILE
-    CHECK $? "mongo started"
+systemctl start $app_name &>> $LOG_FILE
+CHECK $? "starting $app_name"
 }
 
