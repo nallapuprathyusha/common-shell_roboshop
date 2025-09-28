@@ -1,7 +1,7 @@
 #!/bin/bash
 
 source ./common.sh
-v=mongod
+v="mongod"
 root_check
 
 
