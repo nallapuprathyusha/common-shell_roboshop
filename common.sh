@@ -41,7 +41,7 @@ mongo_repo()
     CHECK $? "copying mongo repo file to repository"
 }
 
-sed()
+sed_public()
 {
     sed -i 's/127.0.0.1/0.0.0.0/' /etc/$v.confg
     CHECK $? "allowing public access"
