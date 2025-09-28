@@ -56,6 +56,21 @@ dnf install nodejs -y  &>> $LOG_FILE
 CHECK $? "nodejs installed status::"
 }
 
+NGINX_SETUP()
+{
+    dnf list installed nginx
+CHECK $? "checking for nginx"
+
+dnf module disable nginx -y &>>$LOG_FILE
+CHECK $? "disabling nginx"
+
+dnf module enable nginx:1.24 -y &>>$LOG_FILE
+CHECK $? "enabling for nginx"
+
+dnf install nginx -y &>>$LOG_FILE
+CHECK $? "installing nginx"
+}
+
 USER_SETUP()
 {
 
