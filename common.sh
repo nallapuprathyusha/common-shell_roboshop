@@ -35,8 +35,9 @@ CHECK()
     fi
 }
 
-mongo_repo(){
-    cp /root/shell-roboshop/mongo.repo /etc/yum.repos.d
+mongo_repo()
+{
+    cp /root/common-shell_roboshop/mongo.repo /etc/yum.repos.d
     CHECK $? "copying mongo repo file to repository"
 }
 
