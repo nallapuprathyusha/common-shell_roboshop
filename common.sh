@@ -49,9 +49,9 @@ sed()
 
 systemctl_enable_start()
 {
-systemctl enable mongod &>> $LOG_FILE
-CHECK $? "Enable MongoDB"
+    systemctl enable mongod &>> $LOG_FILE
+    CHECK $? "Enable MongoDB"
 
-systemctl start mongod &>> $LOG_FILE
-CHECK $? "mongo started"
+    systemctl start mongod &>> $LOG_FILE
+    CHECK $? "mongo started"
 }
