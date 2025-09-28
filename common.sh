@@ -11,6 +11,7 @@ LOG_FOLDER="/var/log/shell-scripting"
 SCRIPT_NAME=$( echo $0 | cut -d "." -f1 )
 LOG_FILE=$LOG_FOLDER/$SCRIPT_NAME.log
 mkdir -p  $LOG_FOLDER
+abs_path="/root/common-shell_roboshop/catalogue"
 
 
 #echo  $LOG_FILE
@@ -88,7 +89,7 @@ CHECK $? "Unzip the files in app directory"
 
 denpendencies_reload()
 {
-cp /root/shell-roboshop/catalogue.service /etc/systemd/system/catalogue.service
+cp abs_path.service /etc/systemd/system/catalogue.service
 CHECK $? "copying catalogue serice file to systemd"
 
 systemctl daemon-reload &>> $LOG_FILE
