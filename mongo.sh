@@ -17,8 +17,8 @@ CHECK $? "mongo installed"
 systemctl_enable_start
 
 #SED
-#sed -i 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf
-sed_public
+sed -i 's/127.0.0.1/0.0.0.0/' /etc/mongod.conf
+#sed_public
 
 systemctl restart mongod &>> $LOG_FILE
 CHECK $? "restart mongod"
