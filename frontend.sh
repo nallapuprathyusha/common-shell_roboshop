@@ -16,7 +16,7 @@ cd /usr/share/nginx/html
 unzip /tmp/frontend.zip &>>$LOG_FILE
 CHECK $? "Downloading frontend"
 
-cp /root/shell-roboshop/nginx.conf /etc/nginx/nginx.conf
+cp /root/common_shell-roboshop/nginx.conf /etc/nginx/nginx.conf
 CHECK $? "copying conf files"
 
 systemctl restart nginx 
