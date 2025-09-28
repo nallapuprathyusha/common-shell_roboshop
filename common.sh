@@ -12,6 +12,7 @@ SCRIPT_NAME=$( echo $0 | cut -d "." -f1 )
 LOG_FILE=$LOG_FOLDER/$SCRIPT_NAME.log
 mkdir -p  $LOG_FOLDER
 
+
 #echo  $LOG_FILE
 #tee -a <File_name> -  display output and stores in file
 #&>> -<file_name> dont display the output ,just stores the output
@@ -41,6 +42,64 @@ mongo_repo()
     CHECK $? "copying mongo repo file to repository"
 }
 
+nodejs_setup()
+{
+    dnf list installed nodejs &>> $LOG_FILE
+    CHECK $? "nodejs installation status::"
+
+    dnf module disable nodejs -y &>> $LOG_FILE
+    CHECK $? "nodejs disabl status::"
+
+    dnf module enable nodejs:20 -y &>> $LOG_FILE
+    CHECK $? "nodejs enable status::"
+
+    dnf install nodejs -y  &>> $LOG_FILE
+    CHECK $? "nodejs installed status::"
+}
+
+system_user()
+{
+    id roboshop &>>$LOG_FILE
+if [ $? -ne 0 ]; then
+    useradd --system --home /app --shell /sbin/nologin --comment "roboshop system user" roboshop &>>$LOG_FILE
+    CHECK $? "Creating system user"
+else
+    echo -e "User already exist ... $Y SKIPPING $N"
+fi
+}
+
+downloading_app()
+{
+mkdir -p /app 
+CHECK $? "app directory status::"
+
+rm -rf /app/*
+CHECK $? "Removing existing code"
+
+curl -o /tmp/$app_name https://roboshop-artifacts.s3.amazonaws.com/$app_name-v3.zip &>> $LOG_FILE
+CHECK $? "Downloading files"
+
+cd /app &>> $LOG_FILE
+CHECK $? "Going into directory"
+
+unzip /tmp/$app_name.zip &>> $LOG_FILE
+CHECK $? "Unzip the files in app directory"
+}
+
+denpendencies_reload()
+{
+cp /root/shell-roboshop/catalogue.service /etc/systemd/system/catalogue.service
+CHECK $? "copying catalogue serice file to systemd"
+
+systemctl daemon-reload &>> $LOG_FILE
+CHECK $? "daemon-reload"
+
+systemctl enable catalogue &>> $LOG_FILE
+CHECK $? "enabling catalogue" 
+
+systemctl start catalogue &>> $LOG_FILE
+CHECK $? "starting catalogue"
+}
 
 systemctl_enable_start()
 {
